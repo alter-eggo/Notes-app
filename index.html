@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <title>Notes</title>
+    </head>
+    <body style="width: 100%">
+      <div id="app">
+        <h1> {{ title }}</h1>
+        <div class="message" v-if="message">
+          <p> {{ message }} </p>
+        </div>
+        <div class="new-note">
+          <input type="text" v-model="note.title">
+          <textarea v-model="note.description"> </textarea>
+          <span> <span>
+          <button @click="addNote">New note</button>
+        </div>
+        <div class="notes" v-for="(note, index) in notes" :key="index">
+          <div class="note-header">
+            <p> {{ note.title }} </p>
+          </div>
+          <div class="note-body">
+            <p> {{ note.description }} </p>
+            <span> {{ note.date }}</span>
+          </div>
+        </div>
+      </div>
+    <script>
+      var app = new Vue({
+        el: '#app',
+        data: {
+          title: 'Notes App',
+          message: null,
+          note: {
+            title: '',
+            description: ''
+          },
+          notes: [{
+            title:  'First Note',
+            description: 'Description for first Note',
+            date: new Date(Date.now()).toLocaleString()
+          },
+          {
+            title:  'Second Note',
+            description: 'Description for second Note',
+            date: new Date(Date.now()).toLocaleString()
+          },
+          {
+            title:  'Third Note',
+            description: 'Description for third Note',
+            date: new Date(Date.now()).toLocaleString()
+          }
+        ]
+      },
+      methods: {
+        addNote() {
+          let {title, description} = this.note
+
+          if (title == '' || description == '' ) {
+            this.message = 'Title can not be empty'
+            return false
+          }
+          this.notes.push({
+            title,
+            description,
+            date: new Date(Date.now()).toLocaleString()
+          })
+          this.note.title = '' ;
+          this.note.description = ''
+          this.message = null
+        }
+
+      }
+      })
+    </script>
+    </body>
+</html>
