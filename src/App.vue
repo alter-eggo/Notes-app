@@ -5,22 +5,11 @@
           <div class="container">
             <h1> {{ title }}</h1>
             <message v-if="message" :message="message"/>
-            <div class="new-note">
-              <input type="text" v-model="note.title">
-              <textarea v-model="note.description"> </textarea>
-              <span> </span>
-              <button @click="addNote">New note</button>
-            </div>
-
-            <div class="notes" v-for="(note, index) in notes" :key="index">
-              <div class="note-header">
-                <p> {{ note.title }} </p>
-              </div>
-              <div class="note-body">
-                <p> {{ note.description }} </p>
-                <span> {{ note.date }}</span>
-              </div>
-            </div>
+            <newNote
+            :note="note"
+            @addNote="addNote"
+            />
+            <notes :notes="notes" @remove="removeNote"/>
           </div>
         </section>
       </div>
@@ -28,10 +17,15 @@
 </template>
 
 <script>
-import message from '@/components/message.vue'
+import message from '@/components/Message.vue'
+import newNote from '@/components/NewNote.vue'
+import notes from '@/components/Notes.vue'
+
 export default {
   components: {
-    message
+    message,
+    newNote,
+    notes
   },
   data() {
     return{
@@ -64,7 +58,7 @@ methods: {
     let {title, description} = this.note
 
     if (title == '' || description == '' ) {
-      this.message = 'Title can not be empty'
+      this.message = 'Title and description can not be empty'
       return false
     }
     this.notes.push({
@@ -75,6 +69,9 @@ methods: {
     this.note.title = '' ;
     this.note.description = ''
     this.message = null
+  },
+  removeNote(index){
+    this.notes.splice(index, 1)
   }
 
 }
@@ -83,7 +80,5 @@ methods: {
 </script>
 
 <style lang="scss" scoped>
-  .wrapper{
-    text-align: center;
-  }
+
 </style>
