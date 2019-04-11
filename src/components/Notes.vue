@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="notes">
-    <div class="note" v-for="(note, index) in notes" :key="index">
-      <div class="note-header">
+    <div class="note" :class="{full: !grid}" v-for="(note, index) in notes" :key="index">
+      <div class="note-header" :class="{full: !grid}">
         <p> {{ note.title }} </p>
         <p style="cursor: pointer;" @click="removeNote(index)">X</p>
       </div>
@@ -19,6 +19,10 @@ export default {
     notes: {
       type: Array,
       required: true
+    },
+    grid: {
+      type: Boolean,
+      required: true
     }
   },
   methods: {
@@ -30,7 +34,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .notes{
   display: flex;
   align-items: center;
@@ -43,6 +47,15 @@ export default {
   padding: 18px 20px;
   margin-bottom: 20px;
   background-color: #ffffff;
+  &.full{
+    width: 100%;
+    text-align: center;
+  }
+  &:hover{
+    box-shadow: 0 30px 30px rgba(0, 0, 0, .04);
+    transform: translate(0, -6px);
+    transition: 0.2s;
+  }
 }
 .note-body{
   p {
@@ -57,9 +70,13 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  &.full{
+    justify-content: center;
+  }
   p{
     font-size: 20px;
-    color: #402caf
+    color: #402caf;
+    margin-right: 16px;
   }
 }
 </style>
