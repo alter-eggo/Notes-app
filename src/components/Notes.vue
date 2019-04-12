@@ -1,8 +1,9 @@
 <template lang="html">
   <div class="notes">
-    <div class="note" :class="{full: !grid}" v-for="(note, index) in notes" :key="index">
+    <div class="note" :class="{full: !grid, 'high-priority': note.priority == 'high', 'very-high-priority': note.priority == 'veryHigh' }" v-for="(note, index) in notes" :key="index">
       <div class="note-header" :class="{full: !grid}">
-        <p> {{ note.title }} </p>
+        <p style="cursor: pointer;" v-if="!note.edit" @click="editTitle(index)"> {{ note.title }} </p>
+        <input type="text" v-if="note.edit" v-model="notes.titleEdited" value="note.title">
         <p style="cursor: pointer;" @click="removeNote(index)">X</p>
       </div>
       <div class="note-body">
@@ -23,13 +24,22 @@ export default {
     grid: {
       type: Boolean,
       required: true
+    },
+    titleEdited: {
+      type: String,
+      required: false
     }
   },
   methods: {
     removeNote(index){
       console.log(`Note id - ${index} removed`);
       this.$emit('remove', index)
+    },
+    editTitle(index){
+      this.$emit('editTitle', index, this.notes.titleEdited)
     }
+  },
+  computed: {
   }
 }
 </script>
@@ -78,5 +88,16 @@ export default {
     color: #402caf;
     margin-right: 16px;
   }
+}
+.high-priority{
+  &:hover{
+  box-shadow: 0 30px 30px rgba(255, 196, 0, 0.5);
+}
+}
+
+.very-high-priority{
+  &:hover{
+  box-shadow: 0 30px 30px rgba(255, 3, 3, 0.5);
+}
 }
 </style>

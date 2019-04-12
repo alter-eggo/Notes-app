@@ -25,7 +25,7 @@
             </div>
 
             <!-- note list -->
-            <notes :notes="notesFilter" :grid="grid" @remove="removeNote"/>
+            <notes :notes="notesFilter" :grid="grid" @remove="removeNote" :edit="edit" @editTitle="editTitle" :titleEdited="titleEdited" />
 
           </div>
         </section>
@@ -51,24 +51,31 @@ export default {
       search: '',
       message: null,
       grid: true,
+      edit: false,
+      titleEdited: '',
       note: {
         title: '',
-        description: ''
+        description: '',
+        priority: '',
       },
       notes: [{
         title:  'First Note',
         description: 'Description for first Note',
-        date: new Date(Date.now()).toLocaleString()
+        date: new Date(Date.now()).toLocaleString(),
+        edit: false
       },
       {
         title:  'Second Note',
         description: 'Description for second Note',
-        date: new Date(Date.now()).toLocaleString()
+        date: new Date(Date.now()).toLocaleString(),
+        edit: false
+
       },
       {
         title:  'Third Note',
         description: 'Description for third Note',
-        date: new Date(Date.now()).toLocaleString()
+        date: new Date(Date.now()).toLocaleString(),
+        edit: false
       }
     ]
 }
@@ -93,24 +100,51 @@ computed: {
 },
 methods: {
   addNote() {
-    let {title, description} = this.note
+    let {title, description, priority} = this.note
 
     if (title == '' || description == '' ) {
       this.message = 'Title and description can not be empty'
       return false
     }
+
+    if (priority == '') {
+      this.message = 'Please select priority'
+      return false
+    }
+
     this.notes.push({
       title,
       description,
+      priority,
+      edit:false,
       date: new Date(Date.now()).toLocaleString()
     })
-    this.note.title = '' ;
+    this.note.title = ''
     this.note.description = ''
     this.message = null
+    this.note.priority = ''
   },
   removeNote(index){
     this.notes.splice(index, 1)
-  }
+  },
+  editTitle(index){
+    this.notes[index].edit = true;
+    document.body.addEventListener('keyup', e => {
+      if (e.keyCode === 13) {
+        this.notes[index].title = this.notes.titleEdited
+        this.notes[index].edit = false;
+    }
+  })
+    document.body.addEventListener('keyup', e => {
+      if (e.keyCode === 27) {
+        this.notes[index].edit = false;
+    }
+  })
+    // document.querySelector('.wrapper-content').addEventListener('click', () => {
+    //     this.notes[index].edit = false;
+    // })
+},
+
 }
 
 }
