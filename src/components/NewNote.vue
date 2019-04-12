@@ -5,6 +5,7 @@
       <div class="title">
         <input type="text" v-model="note.title">
         <input type="hidden" v-model="note.edit" value=false>
+        <input type="hidden" v-model="note.editDescription" value=false>
       </div>
       <div class="priority">
         <select required v-model="note.priority">
@@ -37,6 +38,7 @@ export default {
   methods: {
     addNote () {
       this.$emit('addNote', this.note)
+      console.log(this.note)
     }
   }
 }
