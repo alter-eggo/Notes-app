@@ -3,7 +3,7 @@
     <div class="note" :class="{full: !grid, 'high-priority': note.priority == 'high', 'very-high-priority': note.priority == 'veryHigh' }" v-for="(note, index) in notes" :key="index">
       <div class="note-header" :class="{full: !grid}">
         <p style="cursor: pointer;" v-if="!note.edit" @click="editTitle(index)"> {{ note.title }} </p>
-        <input type="text" v-if="note.edit" v-model="notes.titleEdited" value="note.title">
+        <input type="text" v-if="note.edit" v-model="notes[index].titleEdited" value="note.title">
         <p style="cursor: pointer;" @click="removeNote(index)">X</p>
       </div>
       <div class="note-body">
@@ -36,7 +36,7 @@ export default {
       this.$emit('remove', index)
     },
     editTitle(index){
-      this.$emit('editTitle', index, this.notes.titleEdited)
+      this.$emit('editTitle', index, this.notes[index].titleEdited)
     }
   },
   computed: {

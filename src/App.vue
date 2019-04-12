@@ -52,7 +52,7 @@ export default {
       message: null,
       grid: true,
       edit: false,
-      titleEdited: '',
+      titleEdited: 'dolbo',
       note: {
         title: '',
         description: '',
@@ -131,7 +131,7 @@ methods: {
     this.notes[index].edit = true;
     document.body.addEventListener('keyup', e => {
       if (e.keyCode === 13) {
-        this.notes[index].title = this.notes.titleEdited
+        this.notes[index].title = this.notes[index].titleEdited
         this.notes[index].edit = false;
     }
   })
